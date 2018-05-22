@@ -1,1 +1,6 @@
 /web
+*.settings
+.classpath
+.project
+/maven-docker/target
+/.vscode

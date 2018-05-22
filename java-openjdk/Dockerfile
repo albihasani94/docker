@@ -1,3 +1,3 @@
-FROM openjdk
+FROM openjdk:jdk-alpine
 
 CMD java -version

@@ -90,7 +90,7 @@
                                 <image>
                                     <name>maven-docker</name>
                                     <build>
-                                        <from>openjdk:latest</from>
+                                        <from>openjdk:jdk-alpine</from>
                                         <assembly>
                                             <descriptorRef>artifact</descriptorRef>
                                         </assembly>

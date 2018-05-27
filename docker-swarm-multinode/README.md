@@ -16,7 +16,7 @@
 
 4. Run the script swarm-machines
 
-    ```./swarm-machines.sh
+    ```./swarm-machines.sh```
 
 5. Show list of docker machines as in **Step 4**
 

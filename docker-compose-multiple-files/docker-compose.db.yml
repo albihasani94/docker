@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    ports:
+      - 80:8080
+  db:
+    image: couchbase:prod 
+    ports:
+      - 8091:8091

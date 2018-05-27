@@ -4,3 +4,4 @@
 .project
 /maven-docker/target
 /.vscode
+/couchbase-javaee

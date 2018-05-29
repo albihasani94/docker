@@ -10,7 +10,7 @@ echo "======> Creating $managers manager machines ...";
 for node in $(seq 1 $managers);
 do
 	echo "======> Creating manager$node machine ...";
-	docker-machine create -d hyperv manager$node;
+	docker-machine create -d hyperv --hyperv-virtual-switch "Default Switch" manager$node;
 done
 
 # create worker machines
@@ -18,7 +18,7 @@ echo "======> Creating $workers worker machines ...";
 for node in $(seq 1 $workers);
 do
 	echo "======> Creating worker$node machine ...";
-	docker-machine create -d hyperv worker$node;
+	docker-machine create -d hyperv --hyperv-virtual-switch "Default Switch" worker$node;
 done
 
 # list all machines

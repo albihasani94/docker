@@ -1,22 +1,76 @@
 # Docker Swarm (Multinode)
 
-1. Test drive docker-machine
+## Swarm mode: Initialize
 
-    ```docker-machine create -d hyperv mymachine```
+`docker swarm init --listen-addr <ip>`
 
-    I had to downgrade docker-machine to v0.13 due to a bug with hyperv on v0.14
+## Swarm mode: Add Worker
 
-2. Show all the machines, only the newly one being created
+`docker swarm join --token <worker_token> <manager>`
 
-    ```docker-machine ls```
+## Swarm Mode: Primary/Secondary Master
 
-3. Remove the newly created machine
+`docker swarm join --manager --token <manager_token> --listen-addr <master2> <master1>`
 
-   ```docker-machine rm mymachine```
+## Initialize Swarm mode on manager1
 
-4. Run the script swarm-machines
+```bash
+docker-machine ssh manager1 \
+"docker swarm init \
+--listen-addr $(docker-machine ip manager1) \
+--advertise-addr $(docker-machine ip manager1)"
+```
 
-    ```./swarm-machines.sh```
+## Show list of nodes in the cluster
 
-5. Show list of docker machines as in **Step 4**
+`docker-machine ssh manager1 "docker node ls"`
 
+## Get manager token
+
+`docker-machine ssh manager1 "docker swarm join-token manager -q"`
+
+## Get worker token
+
+`docker-machine ssh manager1 "docker swarm join-token worker -q"`
+
+## Join manager2 to the cluster
+
+```bash
+docker-machine ssh manager2 \
+  "docker swarm join \
+  --token `docker-machine ssh manager1 "docker swarm join-token manager -q"` \
+  --listen-addr $(docker-machine ip manager2) \
+  --advertise-addr $(docker-machine ip manager2) \
+  $(docker-machine ip manager1)"
+```
+
+### Response
+
+> This node joined a swarm as a manager.
+
+### Do the same with manager3
+
+## Verify the swarm nodes
+
+`docker-machine ssh manager1 "docker node ls"`
+
+## Join a worker node
+
+```bash
+docker-machine ssh worker1 \
+"docker swarm join \
+--token `docker-machine ssh manager1 "docker swarm join-token worker -q"` \
+--listen-addr $(docker-machine ip worker1) \
+--advertise-addr $(docker-machine ip worker1) \
+$(docker-machine ip manager1)"
+```
+
+### Response
+
+> This node joined a swarm as a worker
+
+### Join worker2 and worker3 to the swarm
+
+### Get info about the swarm
+
+`docker-machine ssh manager1 "docker info"`
